@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teach with Studyverse — Faculty Interest Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d2144;
+    --gold: #c9a84c;
+    --cream: #f0e6cc;
+    --dark: #060f20;
+    --text: #e8dcc8;
+    --muted: #8a9bb5;
+    --border: rgba(201,168,76,0.25);
+    --input-bg: rgba(255,255,255,0.04);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--dark); color: var(--text); font-family: 'Montserrat', sans-serif; min-height: 100vh; line-height: 1.7; }
+  .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--gold); transition: width 0.4s ease; z-index: 100; }
+  .site-header { padding: 24px 40px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .logo-text { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 18px; color: var(--cream); letter-spacing: 2px; text-transform: uppercase; }
+  .logo-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; }
+  .container { max-width: 720px; margin: 0 auto; padding: 60px 24px 120px; }
+  .page { display: none; animation: fadeUp 0.5s ease; }
+  .page.active { display: block; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 6vw, 56px); font-weight: 600; color: var(--cream); line-height: 1.15; margin-bottom: 24px; }
+  h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 4vw, 40px); font-weight: 600; color: var(--cream); line-height: 1.2; margin-bottom: 20px; }
+  h3 { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin: 40px 0 16px; }
+  p { font-size: 15px; color: var(--muted); margin-bottom: 16px; line-height: 1.8; }
+  p strong { color: var(--text); font-weight: 600; }
+  .info-block { background: rgba(201,168,76,0.06); border-left: 3px solid var(--gold); padding: 20px 24px; margin: 24px 0; border-radius: 0 8px 8px 0; }
+  .info-block p { margin-bottom: 8px; color: var(--text); }
+  .info-block p:last-child { margin-bottom: 0; }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+  .form-group { margin-bottom: 32px; }
+  label { display: block; font-size: 13px; font-weight: 700; letter-spacing: 1px; color: var(--cream); margin-bottom: 10px; }
+  label .required { color: var(--gold); margin-left: 4px; }
+  input[type="text"], input[type="tel"], textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; color: var(--text); font-family: 'Montserrat', sans-serif; font-size: 14px; transition: border-color 0.2s, background 0.2s; outline: none; }
+  input[type="text"]:focus, input[type="tel"]:focus, textarea:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+  textarea { resize: vertical; min-height: 100px; }
+  .options-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .options-grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+  .option-item { position: relative; }
+  .option-item input[type="radio"], .option-item input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .option-item label { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 400; letter-spacing: 0; color: var(--muted); transition: all 0.2s; margin-bottom: 0; }
+  .option-item label::before { content: ''; width: 16px; height: 16px; border: 2px solid var(--border); border-radius: 50%; flex-shrink: 0; transition: all 0.2s; }
+  .option-item input[type="checkbox"] + label::before { border-radius: 4px; }
+  .option-item input:checked + label { border-color: var(--gold); background: rgba(201,168,76,0.08); color: var(--cream); }
+  .option-item input:checked + label::before { background: var(--gold); border-color: var(--gold); }
+
+  /* Subject selector - big cards */
+  .subject-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; margin-top: 8px; }
+  .subject-card input[type="radio"] { position: absolute; opacity: 0; }
+  .subject-card label { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 24px 16px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; cursor: pointer; font-size: 13px; font-weight: 600; letter-spacing: 1px; color: var(--muted); transition: all 0.25s; text-align: center; min-height: 90px; }
+  .subject-card label .subject-icon { font-size: 28px; }
+  .subject-card input:checked + label { border-color: var(--gold); background: rgba(201,168,76,0.1); color: var(--cream); box-shadow: 0 0 0 1px var(--gold); }
+  .subject-card label::before { display: none; }
+
+  /* Topics section */
+  .topics-section { display: none; margin-top: 32px; }
+  .topics-section.visible { display: block; animation: fadeUp 0.4s ease; }
+  .topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+
+  .btn-primary { background: var(--gold); color: var(--dark); border: none; padding: 16px 40px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 10px; }
+  .btn-primary:hover { background: #e0bd6a; transform: translateY(-1px); }
+  .btn-secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 16px 32px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 1px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+  .btn-secondary:hover { color: var(--text); border-color: var(--muted); }
+  .btn-row { display: flex; gap: 16px; align-items: center; margin-top: 40px; flex-wrap: wrap; }
+  .step-indicator { display: flex; gap: 8px; margin-bottom: 48px; }
+  .step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: all 0.3s; }
+  .step-dot.active { background: var(--gold); width: 24px; border-radius: 4px; }
+  .step-dot.done { background: var(--gold); opacity: 0.4; }
+  .success-icon { width: 80px; height: 80px; background: rgba(201,168,76,0.1); border: 2px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 32px; }
+  .error-msg { color: #ff6b6b; font-size: 12px; margin-top: 6px; display: none; }
+  .field-error input, .field-error textarea { border-color: #ff6b6b; }
+  .field-error .error-msg { display: block; }
+  .select-all-btn { font-size: 12px; color: var(--gold); cursor: pointer; text-decoration: underline; margin-bottom: 12px; display: inline-block; background: none; border: none; font-family: 'Montserrat', sans-serif; }
+  @media (max-width: 600px) { .site-header { padding: 20px; } .container { padding: 40px 20px 100px; } .options-grid, .topics-grid { grid-template-columns: 1fr; } .subject-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar" style="width: 25%"></div>
+
+<header class="site-header">
+  <span class="logo-text">Studyverse</span>
+  <div class="logo-dot"></div>
+  <span style="font-size:12px; color: var(--muted); letter-spacing:1px;">Faculty Interest Form</span>
+</header>
+
+<div class="container">
+
+  <!-- PAGE 1: About Studyverse -->
+  <div class="page active" id="page1">
+    <div class="step-indicator">
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+    </div>
+    <div class="section-label">What is Studyverse?</div>
+    <h1>Teaching is most powerful when it's built around one student.</h1>
+    <p>Studyverse is a <strong>1-on-1 JEE & NEET mentorship platform</strong> built entirely around one student at a time.</p>
+    <p>No batches. No recordings. No one-size-fits-all plans.</p>
+    <p>Every student gets a dedicated mentor who tracks their progress daily, identifies their exact gaps, and builds a personalised plan around their specific needs.</p>
+    <div class="info-block">
+      <p>We started with a simple belief — <strong>meaningful guidance cannot exist at scale.</strong></p>
+      <p>A student who gets the right teacher at the right time, with full attention, can achieve what years of batch coaching couldn't deliver.</p>
+      <p>Studyverse is that teacher's platform.</p>
+    </div>
+    <div class="divider"></div>
+    <h3>Who are the students?</h3>
+    <p>Class 11, Class 12, and drop-year JEE/NEET aspirants from across India — students who need personal attention that batch coaching cannot provide.</p>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goToPage(2)">Continue <span>→</span></button>
+    </div>
+  </div>
+
+  <!-- PAGE 2: The Opportunity -->
+  <div class="page" id="page2">
+    <div class="step-indicator">
+      <div class="step-dot done"></div>
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+    </div>
+    <div class="section-label">The Opportunity</div>
+    <h2>What working with Studyverse looks like</h2>
+    <h3>What will you do?</h3>
+    <p>— Conduct live 1-on-1 sessions on Google Meet<br>
+    — Teach your strongest topics at the level you're most comfortable with<br>
+    — Track each student's progress and share weekly updates<br>
+    — Be the teacher who actually notices what's holding a student back</p>
+    <div class="divider"></div>
+    <h3>Flexibility</h3>
+    <p>— Teach from anywhere in India<br>
+    — Sessions are scheduled around the student's needs<br>
+    — Minimum commitment: 5 hours per week to start</p>
+    <div class="divider"></div>
+    <h3>Compensation</h3>
+    <div class="info-block">
+      <p><strong>₹400–800 per session</strong> depending on your experience and teaching level</p>
+      <p>Payments processed weekly. As the platform grows, your engagement and earnings grow with it.</p>
+    </div>
+    <div class="divider"></div>
+    <p style="font-style:italic; color: var(--text);">This is not a job. It is a professional association. You work with students who match your subject expertise and availability.</p>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goToPage(1)">← Back</button>
+      <button class="btn-primary" onclick="goToPage(3)">Continue <span>→</span></button>
+    </div>
+  </div>
+
+  <!-- PAGE 3: About You -->
+  <div class="page" id="page3">
+    <div class="step-indicator">
+      <div class="step-dot done"></div>
+      <div class="step-dot done"></div>
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+    </div>
+    <div class="section-label">About You</div>
+    <h2>Tell us about yourself</h2>
+
+    <div class="form-group" id="fg-name">
+      <label>Full Name <span class="required">*</span></label>
+      <input type="text" id="name" placeholder="Your full name">
+      <div class="error-msg">Please enter your full name</div>
+    </div>
+
+    <div class="form-group" id="fg-phone">
+      <label>Phone Number <span class="required">*</span></label>
+      <input type="tel" id="phone" placeholder="+91 XXXXX XXXXX">
+      <div class="error-msg">Please enter a valid phone number</div>
+    </div>
+
+    <div class="form-group">
+      <label>Current City <span class="required">*</span></label>
+      <input type="text" id="city" placeholder="e.g. Jaipur, Delhi, Kota">
+    </div>
+
+    <div class="form-group">
+      <label>Highest Qualification <span class="required">*</span></label>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="qualification" id="q1" value="B.Sc"><label for="q1">B.Sc</label></div>
+        <div class="option-item"><input type="radio" name="qualification" id="q2" value="B.Tech/B.E"><label for="q2">B.Tech / B.E</label></div>
+        <div class="option-item"><input type="radio" name="qualification" id="q3" value="M.Sc"><label for="q3">M.Sc</label></div>
+        <div class="option-item"><input type="radio" name="qualification" id="q4" value="M.Tech"><label for="q4">M.Tech</label></div>
+        <div class="option-item"><input type="radio" name="qualification" id="q5" value="PhD"><label for="q5">PhD</label></div>
+        <div class="option-item"><input type="radio" name="qualification" id="q6" value="Other"><label for="q6">Other</label></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Years of Teaching Experience <span class="required">*</span></label>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="experience" id="e1" value="Less than 1 year"><label for="e1">Less than 1 year</label></div>
+        <div class="option-item"><input type="radio" name="experience" id="e2" value="1–3 years"><label for="e2">1–3 years</label></div>
+        <div class="option-item"><input type="radio" name="experience" id="e3" value="3–5 years"><label for="e3">3–5 years</label></div>
+        <div class="option-item"><input type="radio" name="experience" id="e4" value="5–10 years"><label for="e4">5–10 years</label></div>
+        <div class="option-item"><input type="radio" name="experience" id="e5" value="More than 10 years"><label for="e5">More than 10 years</label></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Current Occupation <span class="required">*</span></label>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="occupation" id="o1" value="Full-time teacher/faculty"><label for="o1">Full-time teacher</label></div>
+        <div class="option-item"><input type="radio" name="occupation" id="o2" value="Coaching institute faculty"><label for="o2">Coaching institute</label></div>
+        <div class="option-item"><input type="radio" name="occupation" id="o3" value="College professor"><label for="o3">College professor</label></div>
+        <div class="option-item"><input type="radio" name="occupation" id="o4" value="Currently between roles"><label for="o4">Between roles</label></div>
+        <div class="option-item"><input type="radio" name="occupation" id="o5" value="Other"><label for="o5">Other</label></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Hours available per week <span class="required">*</span></label>
+      <div class="options-grid">
+        <div class="option-item"><input type="radio" name="hours" id="h1" value="5–10 hours"><label for="h1">5–10 hours</label></div>
+        <div class="option-item"><input type="radio" name="hours" id="h2" value="10–20 hours"><label for="h2">10–20 hours</label></div>
+        <div class="option-item"><input type="radio" name="hours" id="h3" value="20+ hours"><label for="h3">20+ hours</label></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goToPage(2)">← Back</button>
+      <button class="btn-primary" onclick="goToPage(4)">Continue <span>→</span></button>
+    </div>
+  </div>
+
+  <!-- PAGE 4: Subject & Topics -->
+  <div class="page" id="page4">
+    <div class="step-indicator">
+      <div class="step-dot done"></div>
+      <div class="step-dot done"></div>
+      <div class="step-dot done"></div>
+      <div class="step-dot active"></div>
+    </div>
+    <div class="section-label">Your Expertise</div>
+    <h2>Which subject do you teach?</h2>
+    <p>Select your subject — we'll show you the topic list to mark your strongest areas.</p>
+
+    <div class="subject-grid">
+      <div class="subject-card option-item">
+        <input type="radio" name="subject" id="sub-physics" value="Physics" onchange="showTopics('physics')">
+        <label for="sub-physics"><span class="subject-icon">⚡</span>Physics</label>
+      </div>
+      <div class="subject-card option-item">
+        <input type="radio" name="subject" id="sub-chemistry" value="Chemistry" onchange="showTopics('chemistry')">
+        <label for="sub-chemistry"><span class="subject-icon">🧪</span>Chemistry</label>
+      </div>
+      <div class="subject-card option-item">
+        <input type="radio" name="subject" id="sub-biology" value="Biology" onchange="showTopics('biology')">
+        <label for="sub-biology"><span class="subject-icon">🧬</span>Biology</label>
+      </div>
+      <div class="subject-card option-item">
+        <input type="radio" name="subject" id="sub-maths" value="Mathematics" onchange="showTopics('maths')">
+        <label for="sub-maths"><span class="subject-icon">∑</span>Mathematics</label>
+      </div>
+    </div>
+
+    <!-- Physics Topics -->
+    <div class="topics-section" id="topics-physics">
+      <h3>Select topics you're confident teaching</h3>
+      <button class="select-all-btn" onclick="selectAll('physics')">Select All</button>
+      <div class="topics-grid" id="grid-physics"></div>
+    </div>
+
+    <!-- Chemistry Topics -->
+    <div class="topics-section" id="topics-chemistry">
+      <h3>Select topics you're confident teaching</h3>
+      <button class="select-all-btn" onclick="selectAll('chemistry')">Select All</button>
+      <div class="topics-grid" id="grid-chemistry"></div>
+    </div>
+
+    <!-- Biology Topics -->
+    <div class="topics-section" id="topics-biology">
+      <h3>Select topics you're confident teaching</h3>
+      <button class="select-all-btn" onclick="selectAll('biology')">Select All</button>
+      <div class="topics-grid" id="grid-biology"></div>
+    </div>
+
+    <!-- Maths Topics -->
+    <div class="topics-section" id="topics-maths">
+      <h3>Select topics you're confident teaching</h3>
+      <button class="select-all-btn" onclick="selectAll('maths')">Select All</button>
+      <div class="topics-grid" id="grid-maths"></div>
+    </div>
+
+    <div class="form-group" style="margin-top:40px;">
+      <label>In one line — why does the 1-on-1 teaching model interest you? <span class="required">*</span></label>
+      <textarea id="why" placeholder="Your answer..."></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goToPage(3)">← Back</button>
+      <button class="btn-primary" onclick="submitForm()">Submit Application <span>→</span></button>
+    </div>
+  </div>
+
+  <!-- PAGE 5: Success -->
+  <div class="page" id="page5">
+    <div class="success-icon">🙏</div>
+    <div class="section-label">Application Received</div>
+    <h2>Thank you for your interest.</h2>
+    <p>We review every submission personally — not a bot, not an HR team.</p>
+    <p>If your profile aligns with what we're building, <strong>our team will reach out within 48 hours on WhatsApp</strong> for a brief 15-minute conversation.</p>
+    <p>If we're not the right fit right now, we'll let you know honestly. No ghosting.</p>
+    <div class="info-block">
+      <p>We're building something worth being part of. We hope to speak with you soon.</p>
+      <p><strong>— Team Studyverse</strong><br>
+      <a href="https://studyverse.in" style="color: var(--gold);">studyverse.in</a></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const topics = {
+  physics: [
+    "Physics and Measurement", "Kinematics", "Laws of Motion",
+    "Work, Energy and Power", "Rotational Motion", "Gravitation",
+    "Properties of Solids and Liquids", "Thermodynamics",
+    "Kinetic Theory of Gases", "Oscillations and Waves",
+    "Electrostatics", "Current Electricity",
+    "Magnetic Effects of Current and Magnetism",
+    "Electromagnetic Induction and Alternating Currents",
+    "Electromagnetic Waves", "Optics",
+    "Dual Nature of Matter and Radiation",
+    "Atoms and Nuclei", "Electronic Devices", "Experimental Skills"
+  ],
+  chemistry: [
+    "Some Basic Concepts in Chemistry", "Atomic Structure",
+    "Chemical Bonding and Molecular Structure", "Chemical Thermodynamics",
+    "Solutions", "Equilibrium", "Redox Reactions and Electrochemistry",
+    "Chemical Kinetics", "Classification of Elements and Periodicity",
+    "p-Block Elements", "d and f Block Elements", "Coordination Compounds",
+    "Purification and Characterisation of Organic Compounds",
+    "Basic Principles of Organic Chemistry", "Hydrocarbons",
+    "Organic Compounds Containing Halogens",
+    "Organic Compounds Containing Oxygen",
+    "Organic Compounds Containing Nitrogen",
+    "Biomolecules", "Practical Chemistry"
+  ],
+  biology: [
+    "Diversity in Living World",
+    "Structural Organisation in Animals and Plants",
+    "Cell Structure and Function", "Plant Physiology",
+    "Human Physiology", "Reproduction",
+    "Genetics and Evolution", "Biology and Human Welfare",
+    "Biotechnology and Its Applications", "Ecology and Environment"
+  ],
+  maths: [
+    "Sets, Relations and Functions",
+    "Complex Numbers and Quadratic Equations",
+    "Matrices and Determinants", "Permutations and Combinations",
+    "Binomial Theorem", "Sequence and Series",
+    "Limit, Continuity and Differentiability", "Integral Calculus",
+    "Differential Equations", "Co-ordinate Geometry",
+    "Three Dimensional Geometry", "Vector Algebra",
+    "Statistics and Probability", "Trigonometry"
+  ]
+};
+
+// Build topic grids
+Object.keys(topics).forEach(subject => {
+  const grid = document.getElementById('grid-' + subject);
+  topics[subject].forEach((topic, i) => {
+    const div = document.createElement('div');
+    div.className = 'option-item';
+    div.innerHTML = `
+      <input type="checkbox" id="${subject}-t${i}" name="${subject}-topics" value="${topic}">
+      <label for="${subject}-t${i}">${topic}</label>
+    `;
+    grid.appendChild(div);
+  });
+});
+
+function showTopics(subject) {
+  ['physics','chemistry','biology','maths'].forEach(s => {
+    document.getElementById('topics-' + s).classList.remove('visible');
+  });
+  document.getElementById('topics-' + subject).classList.add('visible');
+}
+
+function selectAll(subject) {
+  document.querySelectorAll(`input[name="${subject}-topics"]`).forEach(cb => { cb.checked = true; });
+}
+
+let currentPage = 1;
+const totalPages = 5;
+
+function goToPage(n) {
+  document.getElementById('page' + currentPage).classList.remove('active');
+  currentPage = n;
+  document.getElementById('page' + n).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const pct = Math.round((n / totalPages) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxm0dmBybIcQMcpg4v29mAtmu8FwvpNBTVQ-bNu7WzNs7yvLLw772s4PkT_rirk-jS3/exec'; // ← paste your Web App URL here
+
+function submitForm() {
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  if (!name) { document.getElementById('fg-name').classList.add('field-error'); return; }
+  else document.getElementById('fg-name').classList.remove('field-error');
+  if (!phone) { document.getElementById('fg-phone').classList.add('field-error'); return; }
+  else document.getElementById('fg-phone').classList.remove('field-error');
+
+  const subject = document.querySelector('input[name="subject"]:checked')?.value || '';
+  const subjectKey = subject.toLowerCase() === 'mathematics' ? 'maths' : subject.toLowerCase();
+  const selectedTopics = [...document.querySelectorAll(`input[name="${subjectKey}-topics"]:checked`)].map(c => c.value);
+
+  const data = {
+    name, phone,
+    city: document.getElementById('city').value,
+    qualification: document.querySelector('input[name="qualification"]:checked')?.value || '',
+    experience: document.querySelector('input[name="experience"]:checked')?.value || '',
+    occupation: document.querySelector('input[name="occupation"]:checked')?.value || '',
+    hours: document.querySelector('input[name="hours"]:checked')?.value || '',
+    subject,
+    topics: selectedTopics.join(', '),
+    why: document.getElementById('why').value,
+    timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+  };
+
+  // Disable submit button and show loading state
+  const submitBtn = document.querySelector('#page4 .btn-primary');
+  const originalText = submitBtn.innerHTML;
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = 'Submitting… <span>⏳</span>';
+
+  // JSONP — only reliable cross-origin method for Apps Script
+  const callbackName = 'sv_cb_' + Date.now();
+  const params = new URLSearchParams({ data: JSON.stringify(data), callback: callbackName });
+  const script = document.createElement('script');
+  script.src = APPS_SCRIPT_URL + '?' + params.toString();
+
+  const timeout = setTimeout(() => {
+    cleanup();
+    goToPage(5);
+  }, 8000);
+
+  function cleanup() {
+    clearTimeout(timeout);
+    if (script.parentNode) script.parentNode.removeChild(script);
+    delete window[callbackName];
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalText;
+  }
+
+  window[callbackName] = function() { cleanup(); goToPage(5); };
+  script.onerror = function() { cleanup(); goToPage(5); };
+  document.body.appendChild(script);
+}
+</script>
+</body>
+</html>
